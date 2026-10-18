@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-sand-50 text-ink-900 antialiased;
+    font-family: theme('fontFamily.sans');
+    overflow-x: hidden;
+    font-variant-numeric: tabular-nums;
+  }
+  /* 16px mínimo en campos: evita el zoom automático de iOS al enfocar. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-sand-200 bg-white p-4 shadow-card md:p-5;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-ink-800;
+  }
+  .field {
+    @apply block w-full rounded-xl border border-sand-200 bg-white px-3.5 py-2.5 text-ink-900 outline-none transition;
+    @apply focus:border-ink-600 focus:ring-2 focus:ring-ink-200;
+    min-height: 48px;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-rose-500 ring-2 ring-rose-100;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ink-600 focus-visible:ring-offset-2;
+    @apply disabled:cursor-not-allowed disabled:opacity-45;
+    min-height: 48px;
+  }
+  .btn-primary {
+    @apply btn bg-ink-800 text-white hover:bg-ink-700 active:bg-ink-700;
+  }
+  .btn-accent {
+    @apply btn bg-clay-600 text-white hover:bg-clay-500;
+  }
+  .btn-ghost {
+    @apply btn border border-sand-200 bg-white text-ink-800 hover:bg-sand-50;
+  }
+  .btn-danger {
+    @apply btn border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100;
+  }
+}
+
+/* Los botones "se iluminan" al pasar el dedo o el ratón y al pulsarlos. */
+button:not(:disabled),
+a.btn-primary,
+a.btn-ghost {
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+@media (hover: hover) {
+  button[aria-pressed='false']:not(:disabled):hover,
+  button[role='tab'][aria-selected='false']:hover {
+    background-color: theme('colors.sand.100');
+    border-color: theme('colors.ink.500');
+    box-shadow: 0 0 0 3px theme('colors.ink.100');
+  }
+}
+button:not(:disabled):active,
+a.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Impresión / PDF: solo se imprime lo que no lleve la clase no-print (por ejemplo, el informe mensual). */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
